@@ -6,6 +6,7 @@ spring:
     view:
       prefix: /
       suffix: .jsp
+    static-path-pattern: /**
   datasource:
     username: film
     password: 123
