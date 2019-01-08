@@ -7,20 +7,11 @@ spring:
       prefix: /
       suffix: .jsp
   datasource:
-    username: erp
+    username: film
     password: 123
     url: jdbc:oracle:thin:@localhost:1521:orcl
     driver-class-name: oracle.jdbc.OracleDriver
-  thymeleaf:
-    cache: false
-    mode: HTML5
-    servlet:
-      content-type: text/html; charset=utf-8
-    encoding: UTF-8
-    prefix: /
-    suffix: .html
-    view-names:
-    - templates/*
   redis:
     port: 6379
-    url: 192.168.43.255
+    url: localhost
+    

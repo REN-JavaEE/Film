@@ -9,5 +9,5 @@ import com.lls.entity.User;
 public interface UserDAO {
 	@Select("select * from erp_user")
 	public List<User> getUsers();
-
+	
 }

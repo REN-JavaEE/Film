@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>TicketOrder</title>
+		<!-- for-mobile-apps -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="" />
+		<script type="application/x-javascript">
+			addEventListener("load", function() {
+				setTimeout(hideURLbar, 0);
+			}, false);
+
+			function hideURLbar() {
+				window.scrollTo(0, 1);
+			}
+		</script>
+		<!-- //for-mobile-apps -->
+		<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+		<!-- pop-up -->
+		<link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+		<!-- //pop-up -->
+		<link href="css/easy-responsive-tabs.css" rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" type="text/css" href="css/zoomslider.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.mobile.css" />
+		<link href="css/font-awesome.css" rel="stylesheet">
+		<script type="text/javascript" src="js/modernizr-2.6.2.min.js"></script>
+		<!--/web-fonts-->
+		<link href='http://fonts.googleapis.com/css?family=Tangerine:400,700' rel='stylesheet' type='text/css'>
+		<link href="http://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+		<!--//web-fonts-->
+		<!--
+        	作者：946453334@qq.com
+        	时间：2019-01-03
+        	描述：选座
+        -->
+		<link rel="stylesheet" type="text/css" href="css/jq22.css" />
+
+		<style type="text/css">
+			.front {
+				width: 300px;
+				margin: 5px 32px 45px 32px;
+				background-color: #f0f0f0;
+				color: #666;
+				text-align: center;
+				padding: 3px;
+				border-radius: 5px;
+			}
+			
+			.booking_area {
+				float: right;
+				position: relative;
+				width: 200px;
+				height: 450px;
+			}
+			
+			.booking_area h3 {
+				margin: 5px 5px 0 0;
+				font-size: 16px;
+			}
+			
+			.booking_area p {
+				line-height: 26px;
+				font-size: 16px;
+				color: #999
+			}
+			
+			.booking_area p span {
+				color: #666
+			}
+			
+			div.seatCharts-cell {
+				color: #182C4E;
+				height: 25px;
+				width: 25px;
+				line-height: 25px;
+				margin: 3px;
+				float: left;
+				text-align: center;
+				outline: none;
+				font-size: 13px;
+			}
+			
+			div.seatCharts-seat {
+				color: #fff;
+				cursor: pointer;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+			}
+			
+			div.seatCharts-row {
+				height: 35px;
+			}
+			
+			div.seatCharts-seat.available {
+				background-color: #B9DEA0;
+			}
+			
+			div.seatCharts-seat.focused {
+				background-color: #76B474;
+				border: none;
+			}
+			
+			div.seatCharts-seat.selected {
+				background-color: #E6CAC4;
+			}
+			
+			div.seatCharts-seat.unavailable {
+				background-color: #472B34;
+				cursor: not-allowed;
+			}
+			
+			div.seatCharts-container {
+				border-right: 1px dotted #adadad;
+				width: 400px;
+				padding: 20px;
+				float: left;
+			}
+			
+			div.seatCharts-legend {
+				padding-left: 0px;
+				position: absolute;
+				bottom: 16px;
+			}
+			
+			ul.seatCharts-legendList {
+				padding-left: 0px;
+			}
+			
+			.seatCharts-legendItem {
+				float: left;
+				width: 90px;
+				margin-top: 10px;
+				line-height: 2;
+			}
+			
+			span.seatCharts-legendDescription {
+				margin-left: 5px;
+				line-height: 30px;
+			}
+			
+			.checkout-button {
+				display: block;
+				width: 80px;
+				height: 24px;
+				line-height: 20px;
+				margin: 10px auto;
+				border: 1px solid #999;
+				font-size: 14px;
+				cursor: pointer
+			}
+			
+			#seats_chose {
+				max-height: 150px;
+				overflow-y: auto;
+				overflow-x: none;
+				width: 200px;
+			}
+			
+			#seats_chose li {
+				float: left;
+				width: 72px;
+				height: 26px;
+				line-height: 26px;
+				border: 1px solid #d3d3d3;
+				background: #f7f7f7;
+				margin: 6px;
+				font-size: 14px;
+				font-weight: bold;
+				text-align: center
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--/main-header-->
+		<!--/banner-section-->
+		<div id="demo-1" class="banner-inner">
+			<div class="banner-inner-dott">
+				<!--/header-w3l-->
+				<div class="header-w3-agileits" id="home">
+					<div class="inner-header-agile part2">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+								<h1><a  href="index.html"><span>M</span>ovies <span>P</span>ro</a></h1>
+							</div>
+							<!-- navbar-header -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li>
+										<a href="index.html">Home</a>
+									</li>
+									<li class="dropdown active">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Genre <b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<li>
+												<div class="col-sm-4">
+													<ul class="multi-column-dropdown">
+														<li>
+															<a href="genre.html">Action</a>
+														</li>
+														<li>
+															<a href="genre.html">Biography</a>
+														</li>
+														<li>
+															<a href="genre.html">Crime</a>
+														</li>
+														<li>
+															<a href="genre.html">Family</a>
+														</li>
+														<li>
+															<a href="horror.html">Horror</a>
+														</li>
+														<li>
+															<a href="genre.html">Romance</a>
+														</li>
+														<li>
+															<a href="genre.html">Sports</a>
+														</li>
+														<li>
+															<a href="genre.html">War</a>
+														</li>
+													</ul>
+												</div>
+												<div class="col-sm-4">
+													<ul class="multi-column-dropdown">
+														<li>
+															<a href="genre.html">Adventure</a>
+														</li>
+														<li>
+															<a href="comedy.html">Comedy</a>
+														</li>
+														<li>
+															<a href="genre.html">Documentary</a>
+														</li>
+														<li>
+															<a href="genre.html">Fantasy</a>
+														</li>
+														<li>
+															<a href="genre.html">Thriller</a>
+														</li>
+													</ul>
+												</div>
+												<div class="col-sm-4">
+													<ul class="multi-column-dropdown">
+														<li>
+															<a href="genre.html">Animation</a>
+														</li>
+														<li>
+															<a href="genre.html">Costume</a>
+														</li>
+														<li>
+															<a href="genre.html">Drama</a>
+														</li>
+														<li>
+															<a href="genre.html">History</a>
+														</li>
+														<li>
+															<a href="genre.html">Musical</a>
+														</li>
+														<li>
+															<a href="genre.html">Psychological</a>
+														</li>
+													</ul>
+												</div>
+												<div class="clearfix"></div>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="series.html">tv - series</a>
+									</li>
+									<li>
+										<a href="news.html">news</a>
+									</li>
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">Country <b class="caret"></b></a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<li>
+												<div class="col-sm-4">
+													<ul class="multi-column-dropdown">
+														<li>
+															<a href="genre.html">Asia</a>
+														</li>
+														<li>
+															<a href="genre.html">France</a>
+														</li>
+														<li>
+															<a href="genre.html">Taiwan</a>
+														</li>
+														<li>
+															<a href="genre.html">United States</a>
+														</li>
+													</ul>
+												</div>
+												<div class="col-sm-4">
+													<ul class="multi-column-dropdown">
+														<li>
+															<a href="genre.html">China</a>
+														</li>
+														<li>
+															<a href="genre.html">HongCong</a>
+														</li>
+														<li>
+															<a href="genre.html">Japan</a>
+														</li>
+														<li>
+															<a href="genre.html">Thailand</a>
+														</li>
+													</ul>
+												</div>
+												<div class="col-sm-4">
+													<ul class="multi-column-dropdown">
+														<li>
+															<a href="genre.html">Euro</a>
+														</li>
+														<li>
+															<a href="genre.html">India</a>
+														</li>
+														<li>
+															<a href="genre.html">Korea</a>
+														</li>
+														<li>
+															<a href="genre.html">United Kingdom</a>
+														</li>
+													</ul>
+												</div>
+												<div class="clearfix"></div>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="list.html">A - z list</a>
+									</li>
+									<li>
+										<a href="contact.html">Contact</a>
+									</li>
+								</ul>
+
+							</div>
+							<div class="clearfix"> </div>
+						</nav>
+						<div class="w3ls_search">
+							<div class="cd-main-header">
+								<ul class="cd-header-buttons">
+									<li>
+										<a class="cd-search-trigger" href="#cd-search"> <span></span></a>
+									</li>
+								</ul>
+								<!-- cd-header-buttons -->
+							</div>
+							<div id="cd-search" class="cd-search">
+								<form action="#" method="post">
+									<input name="Search" type="search" placeholder="Search...">
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+				<!--//header-w3l-->
+			</div>
+		</div>
+		<!--/banner-section-->
+		<!--//main-header-->
+		<!--/banner-bottom-->
+		<div class="w3_agilits_banner_bootm">
+			<div class="w3_agilits_inner_bottom">
+				<div class="col-md-6 wthree_agile_login">
+					<ul>
+						<li><i class="fa fa-phone" aria-hidden="true"></i> (+086) 888 888 8888</li>
+						<li>
+							<a href="#" class="login" data-toggle="modal" data-target="#myModal4">Login</a>
+						</li>
+						<li>
+							<a href="#" class="login reg" data-toggle="modal" data-target="#myModal5">Register</a>
+						</li>
+
+					</ul>
+				</div>
+				<div class="col-md-6 wthree_share_agile">
+
+					<div class="single-agile-shar-buttons">
+						<ul>
+							<li>
+								<div class="fb-like" data-href="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
+
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container">
+			
+			<div class="statu">
+				<div id="legend"></div>
+			</div>
+
+			<div class="demo clearfix">
+
+				<!---左边座位列表----->
+
+				<div id="seat_area">
+
+					<div class="front">屏幕</div>
+
+				</div>
+				
+				
+				
+				<!---右边选座信息----->
+
+				<div class="booking_area"><br />
+
+					<span class="label label-default">电影：</span>&nbsp;<span class="label label-primary">天将雄师</span><br /><br /><br />
+
+					<span class="label label-default">时间：</span>&nbsp;<span class="label label-success">03月20日 22:15</span><br /><br /><br />
+
+					<span class="label label-default">座位：</span>
+					<ul id="seats_chose"></ul><br /><br /><br />
+
+					<span class="label label-default">票数：</span>&nbsp;<span class="label label-warning" id="tickects_num">0</span><br /><br /><br />
+
+					<span class="label label-default">总价：</span>&nbsp;<b>￥<span class="label label-info" id="total_price">0</span></b><br /><br /><br />
+
+					<input type="button" class="btn" value="确定购买" />
+
+				</div>
+				
+			</div>
+		</div>
+		<script src="http://www.jq22.com/jquery/1.9.1/jquery.min.js"></script>
+
+		<script type="text/javascript" src="js/jquery.seat-charts.min.js"></script>
+
+		<script type="text/javascript">
+			var price = 100; //电影票价
+
+			$(document).ready(function() {
+
+				var $cart = $('#seats_chose'), //座位区
+
+					$tickects_num = $('#tickects_num'), //票数
+
+					$total_price = $('#total_price'); //票价总额
+
+				var sc = $('#seat_area').seatCharts({
+
+					map: [ //座位结构图 a 代表座位; 下划线 "_" 代表过道
+
+						'cccccccccc',
+
+						'cccccccccc',
+
+						'__________',
+
+						'cccccccc__',
+
+						'cccccccccc',
+
+						'cccccccccc',
+
+						'cccccccccc',
+
+						'cccccccccc',
+
+						'cccccccccc',
+
+						'cc__cc__cc'
+
+					],
+
+					naming: { //设置行列等信息
+
+						top: false, //不显示顶部横坐标（行） 
+
+						getLabel: function(character, row, column) { //返回座位信息 
+
+							return column;
+
+						}
+
+					},
+
+					legend: { //定义图例
+
+						node: $('#legend'),
+
+						items: [
+
+							['c', 'available', '可选座'],
+
+							['c', 'unavailable', '已售出']
+
+						]
+
+					},
+
+					click: function() {
+
+						if(this.status() == 'available') { //若为可选座状态，添加座位
+
+							$('<li>' + (this.settings.row + 1) + '排' + this.settings.label + '座</li>')
+
+								.attr('id', 'cart-item-' + this.settings.id)
+
+								.data('seatId', this.settings.id)
+
+								.appendTo($cart);
+
+							$tickects_num.text(sc.find('selected').length + 1); //统计选票数量
+
+							$total_price.text(getTotalPrice(sc) + price); //计算票价总金额
+
+							return 'selected';
+
+						} else if(this.status() == 'selected') { //若为选中状态
+
+							$tickects_num.text(sc.find('selected').length - 1); //更新票数量
+
+							$total_price.text(getTotalPrice(sc) - price); //更新票价总金额
+
+							$('#cart-item-' + this.settings.id).remove(); //删除已预订座位
+
+							return 'available';
+
+						} else if(this.status() == 'unavailable') { //若为已售出状态
+
+							return 'unavailable';
+
+						} else {
+
+							return this.style();
+
+						}
+
+					}
+
+				});
+
+				//设置已售出的座位
+
+				sc.get(['1_3', '1_4', '4_4', '4_5', '4_6', '4_7', '4_8']).status('unavailable');
+
+			});
+
+			function getTotalPrice(sc) { //计算票价总额
+
+				var total = 0;
+
+				sc.find('selected').each(function() {
+
+					total += price;
+
+				});
+
+				return total;
+
+			}
+		</script>
+
+		<!--/footer-bottom-->
+		<div class="contact-w3ls" id="contact">
+			<div class="footer-w3lagile-inner">
+				<h2>Sign up for our <span>Newsletter</span></h2>
+				<p class="para">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum. Donec rutrum sed sem quis venenatis.</p>
+				<div class="footer-contact">
+					<form action="#" method="post">
+						<input type="email" name="Email" placeholder="Enter your email...." required=" ">
+						<input type="submit" value="Subscribe">
+					</form>
+				</div>
+				<div class="footer-grids w3-agileits">
+					<div class="col-md-2 footer-grid">
+						<h4>Release</h4>
+						<ul>
+							<li>
+								<a href="#" title="Release 2016">2016</a>
+							</li>
+							<li>
+								<a href="#" title="Release 2015">2015</a>
+							</li>
+							<li>
+								<a href="#" title="Release 2014">2014</a>
+							</li>
+							<li>
+								<a href="#" title="Release 2013">2013</a>
+							</li>
+							<li>
+								<a href="#" title="Release 2012">2012</a>
+							</li>
+							<li>
+								<a href="#" title="Release 2011">2011</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-2 footer-grid">
+						<h4>Movies</h4>
+						<ul>
+
+							<li>
+								<a href="genre.html">ADVENTURE</a>
+							</li>
+							<li>
+								<a href="comedy.html">COMEDY</a>
+							</li>
+							<li>
+								<a href="series.html">FANTASY</a>
+							</li>
+							<li>
+								<a href="series.html">ACTION </a>
+							</li>
+							<li>
+								<a href="genre.html">MOVIES </a>
+							</li>
+							<li>
+								<a href="horror.html">HORROR </a>
+							</li>
+
+						</ul>
+					</div>
+
+					<div class="col-md-2 footer-grid">
+						<h4>Review Movies</h4>
+						<ul class="w3-tag2">
+							<li>
+								<a href="comedy.html">Comedy</a>
+							</li>
+							<li>
+								<a href="horror.html">Horror</a>
+							</li>
+							<li>
+								<a href="series.html">Historical</a>
+							</li>
+							<li>
+								<a href="series.html">Romantic</a>
+							</li>
+							<li>
+								<a href="series.html">Love</a>
+							</li>
+							<li>
+								<a href="genre.html">Action</a>
+							</li>
+							<li>
+								<a href="single.html">Reviews</a>
+							</li>
+							<li>
+								<a href="comedy.html">Comedy</a>
+							</li>
+							<li>
+								<a href="horror.html">Horror</a>
+							</li>
+							<li>
+								<a href="series.html">Historical</a>
+							</li>
+							<li>
+								<a href="series.html">Romantic</a>
+							</li>
+							<li>
+								<a href="genre.html">Love</a>
+							</li>
+							<li>
+								<a href="comedy.html">Comedy</a>
+							</li>
+							<li>
+								<a href="horror.html">Horror</a>
+							</li>
+							<li>
+								<a href="genre.html">Historical</a>
+							</li>
+
+						</ul>
+
+					</div>
+					<div class="col-md-2 footer-grid">
+						<h4>Latest Movies</h4>
+						<div class="footer-grid1">
+							<div class="footer-grid1-left">
+								<a href="single.html"><img src="images/1.jpg" alt=" " class="img-responsive"></a>
+							</div>
+							<div class="footer-grid1-right">
+								<a href="single.html">eveniet ut molesti</a>
+
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+						<div class="footer-grid1">
+							<div class="footer-grid1-left">
+								<a href="single.html"><img src="images/2.jpg" alt=" " class="img-responsive"></a>
+							</div>
+							<div class="footer-grid1-right">
+								<a href="single.html">earum rerum tenet</a>
+
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+						<div class="footer-grid1">
+
+							<div class="footer-grid1-left">
+								<a href="single.html"><img src="images/4.jpg" alt=" " class="img-responsive"></a>
+							</div>
+							<div class="footer-grid1-right">
+								<a href="single.html">eveniet ut molesti</a>
+
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+						<div class="footer-grid1">
+							<div class="footer-grid1-left">
+								<a href="single.html"><img src="images/3.jpg" alt=" " class="img-responsive"></a>
+							</div>
+							<div class="footer-grid1-right">
+								<a href="single.html">earum rerum tenet</a>
+
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+
+					</div>
+					<div class="col-md-2 footer-grid">
+						<h4 class="b-log"><a href="index.html"><span>M</span>ovies <span>P</span>ro</a></h4>
+						<div class="footer-grid-instagram">
+							<a href="single.html"><img src="images/m1.jpg" alt=" " class="img-responsive"></a>
+						</div>
+						<div class="footer-grid-instagram">
+							<a href="single.html"><img src="images/m2.jpg" alt=" " class="img-responsive"></a>
+						</div>
+						<div class="footer-grid-instagram">
+							<a href="single.html"><img src="images/m3.jpg" alt=" " class="img-responsive"></a>
+						</div>
+						<div class="footer-grid-instagram">
+							<a href="single.html"><img src="images/m4.jpg" alt=" " class="img-responsive"></a>
+						</div>
+						<div class="footer-grid-instagram">
+							<a href="single.html"><img src="images/m5.jpg" alt=" " class="img-responsive"></a>
+						</div>
+						<div class="footer-grid-instagram">
+							<a href="single.html"><img src="images/m6.jpg" alt=" " class="img-responsive"></a>
+						</div>
+
+						<div class="clearfix"> </div>
+					</div>
+					<div class="clearfix"> </div>
+					<ul class="bottom-links-agile">
+						<li>
+							<a href="icons.html" title="Font Icons">Icons</a>
+						</li>
+						<li>
+							<a href="short-codes.html" title="Short Codes">Short Codes</a>
+						</li>
+						<li>
+							<a href="contact.html" title="contact">Contact</a>
+						</li>
+
+					</ul>
+				</div>
+				<h3 class="text-center follow">Connect <span>Us</span></h3>
+				<ul class="social-icons1 agileinfo">
+					<li>
+						<a href="#"><i class="fa fa-facebook"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-twitter"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-linkedin"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-youtube"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-google-plus"></i></a>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+		<div class="w3agile_footer_copy">
+			<p>Copyright &copy; 2017.Company name All rights reserved.
+				<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+			</p>
+		</div>
+		<a href="#home" id="toTop" class="scroll" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+	</body>
+
+</html>
